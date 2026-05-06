@@ -709,10 +709,8 @@ canvas.ppp-canvas { display: block; width: 100%; height: 50px; }
         <div class="script-label">Phrase de priorisation</div>
         <p>"On vient de faire le tour ensemble. Parmi tout ça, qu'est-ce qui vous semble le plus important à travailler en premier pour vous ?"</p>
       </div>
-      <div class="field"><label>Priorité 1</label><input type="text" id="p1" oninput="sync()" placeholder="Ex : sevrage tabagique"></div>
-      <div class="field"><label>Objectif concret — priorité 1</label><input type="text" id="obj1" oninput="sync()" placeholder="Ex : réduire de moitié d'ici 1 mois"></div>
-      <div class="field"><label>Priorité 2 (facultatif)</label><input type="text" id="p2" oninput="sync()" placeholder="Ex : reprise activité physique"></div>
-      <div class="field"><label>Objectif concret — priorité 2</label><input type="text" id="obj2" oninput="sync()" placeholder="Ex : marche 30 min, 3 fois par semaine"></div>
+      <div class="field"><label>Priorité 1</label><input type="text" id="p1" oninput="sync(); updatePabLabels();" placeholder="Ex : sevrage tabagique"></div>
+      <div class="field"><label>Priorité 2 (facultatif)</label><input type="text" id="p2" oninput="sync(); updatePabLabels();" placeholder="Ex : reprise activité physique"></div>
     </div>
   </div>
 
@@ -734,8 +732,16 @@ canvas.ppp-canvas { display: block; width: 100%; height: 50px; }
           <div class="pab-num">P1</div>
           <span class="pab-label" id="pab1-label">Priorité 1 — renseignez l'étape 4</span>
         </div>
+
+        <div class="grp-title">Objectif concret</div>
+        <div class="pab-chips" id="pab1-obj-chips"></div>
+        <div class="field" style="margin-top:5px;">
+          <input type="text" id="obj1" oninput="sync()" placeholder="Choisissez ou saisissez un objectif">
+        </div>
+
+        <div class="grp-title" style="margin-top:8px;">Actions suggérées</div>
         <div class="pab-chips" id="pab1-chips"></div>
-        <div class="grp-title" style="margin-top:8px;">Actions retenues</div>
+        <div class="grp-title" style="margin-top:6px;">Actions retenues</div>
         <div class="action-row">
           <input type="text" id="act1" oninput="sync()" placeholder="Action 1 — priorité 1">
           <select id="del1" onchange="sync()"><option>Court terme</option><option>Moyen terme</option><option>Long terme</option></select>
@@ -752,8 +758,16 @@ canvas.ppp-canvas { display: block; width: 100%; height: 50px; }
           <div class="pab-num" style="background:#E1F5EE;color:#0F6E56;">P2</div>
           <span class="pab-label" id="pab2-label">Priorité 2 — facultatif</span>
         </div>
+
+        <div class="grp-title">Objectif concret</div>
+        <div class="pab-chips" id="pab2-obj-chips"></div>
+        <div class="field" style="margin-top:5px;">
+          <input type="text" id="obj2" oninput="sync()" placeholder="Choisissez ou saisissez un objectif">
+        </div>
+
+        <div class="grp-title" style="margin-top:8px;">Actions suggérées</div>
         <div class="pab-chips" id="pab2-chips"></div>
-        <div class="grp-title" style="margin-top:8px;">Actions retenues</div>
+        <div class="grp-title" style="margin-top:6px;">Actions retenues</div>
         <div class="action-row">
           <input type="text" id="act3" oninput="sync()" placeholder="Action 1 — priorité 2">
           <select id="del3" onchange="sync()"><option>Court terme</option><option>Moyen terme</option><option>Long terme</option></select>
@@ -1033,12 +1047,13 @@ function sync() {
   var datebilan = document.getElementById('datebilan').value;
   var tranche = document.querySelector('input[name=tranche]:checked');
   var p1 = document.getElementById('p1').value;
-  var obj1 = document.getElementById('obj1').value;
   var p2 = document.getElementById('p2').value;
-  var obj2 = document.getElementById('obj2').value;
-  var act1 = document.getElementById('act1').value;
-  var act2 = document.getElementById('act2').value;
-  var act3 = document.getElementById('act3').value;
+  var obj1 = document.getElementById('obj1') ? document.getElementById('obj1').value : '';
+  var obj2 = document.getElementById('obj2') ? document.getElementById('obj2').value : '';
+  var act1 = document.getElementById('act1') ? document.getElementById('act1').value : '';
+  var act2 = document.getElementById('act2') ? document.getElementById('act2').value : '';
+  var act3 = document.getElementById('act3') ? document.getElementById('act3').value : '';
+  var act4 = document.getElementById('act4') ? document.getElementById('act4').value : '';
   var vaccinprec = document.getElementById('vaccinprec').value;
   var commentaire = document.getElementById('commentaire').value;
 
@@ -1402,6 +1417,230 @@ var SUGGESTIONS = {
   }
 };
 
+var OBJECTIFS = {
+  'tabac': [
+    'Ne plus fumer dans 3 mois',
+    'Réduire de moitié ma consommation d\'ici 1 mois',
+    'Arrêter complètement d\'ici 6 mois'
+  ],
+  'alcool': [
+    'Pas d\'alcool en semaine d\'ici 1 mois',
+    'Réduire à 2 verres maximum par occasion',
+    'Zéro alcool pendant 30 jours'
+  ],
+  'cannabis': [
+    'Arrêter complètement d\'ici 3 mois',
+    'Réduire à 1 fois par semaine maximum'
+  ],
+  'sédentarité': [
+    'Marcher 30 min par jour tous les jours',
+    'Pratiquer une activité physique 3 fois par semaine',
+    'Réduire le temps assis à moins de 6h par jour'
+  ],
+  'activité physique': [
+    'Pratiquer 30 min d\'activité 3 fois par semaine',
+    'Rejoindre un cours sportif dans le mois',
+    'Marcher 10 000 pas par jour'
+  ],
+  'alimentation': [
+    'Manger 5 fruits et légumes par jour',
+    'Supprimer les aliments ultra-transformés',
+    'Cuisiner maison au moins 5 repas par semaine'
+  ],
+  'poids': [
+    'Perdre 3 kg en 3 mois',
+    'Stabiliser mon poids dans les 2 prochains mois',
+    'Consulter un diététicien dans le mois'
+  ],
+  'surpoids': [
+    'Perdre 5% de mon poids en 6 mois',
+    'Adopter une alimentation équilibrée dès cette semaine',
+    'Reprendre une activité physique régulière'
+  ],
+  'sommeil': [
+    'Dormir 7h par nuit en semaine',
+    'Me coucher à heure fixe tous les soirs',
+    'Arrêter les écrans 1h avant de dormir'
+  ],
+  'hta': [
+    'Normaliser ma tension en 3 mois',
+    'Prendre ma tension chaque matin pendant 1 semaine',
+    'Réduire ma consommation de sel'
+  ],
+  'tension': [
+    'Contrôler ma tension 2 fois par jour pendant 7 jours',
+    'Bilan médical tensionnel dans les 15 jours'
+  ],
+  'diabète': [
+    'Stabiliser ma glycémie à jeun sous 1,26 g/L',
+    'Consulter un diététicien dans les 2 semaines',
+    'Faire un bilan HbA1c dans 3 mois'
+  ],
+  'cholestérol': [
+    'Faire un bilan lipidique dans le mois',
+    'Réduire les graisses saturées dans mon alimentation',
+    'Normaliser mon LDL en 6 mois'
+  ],
+  'cardiovasculaire': [
+    'Consulter le cardiologue dans le mois',
+    'Arrêter le tabac si fumeur',
+    'Pratiquer 30 min d\'activité modérée 3x/semaine'
+  ],
+  'colorectal': [
+    'Envoyer le kit de dépistage dans les 7 jours',
+    'Réaliser le test de dépistage avant la fin du mois'
+  ],
+  'mammographie': [
+    'Prendre rendez-vous pour mammographie cette semaine',
+    'Effectuer la mammographie dans le mois'
+  ],
+  'frottis': [
+    'Prendre rendez-vous gynécologique dans les 15 jours',
+    'Réaliser le frottis avant la fin du trimestre'
+  ],
+  'anxiété': [
+    'Pratiquer 10 min de relaxation par jour',
+    'Consulter un psychologue dans les 2 semaines',
+    'Réduire les excitants (café, alcool) dès maintenant'
+  ],
+  'dépression': [
+    'Consulter le médecin traitant cette semaine',
+    'Maintenir 1 activité sociale par semaine',
+    'Pratiquer une activité physique légère chaque jour'
+  ],
+  'isolement': [
+    'Rejoindre une association dans le mois',
+    'Voir un ami ou de la famille au moins 1 fois par semaine'
+  ],
+  'chute': [
+    'Évaluation kinésithérapeute dans les 15 jours',
+    'Sécuriser mon domicile cette semaine',
+    'Pratiquer des exercices d\'équilibre quotidiens'
+  ],
+  'cognitif': [
+    'Consultation mémoire dans le mois',
+    'Stimulation cognitive 15 min par jour'
+  ],
+  'mémoire': [
+    'Consultation mémoire chez le médecin traitant',
+    'Activité cognitive quotidienne (lecture, mots croisés)'
+  ],
+  'observance': [
+    'Zéro oubli de médicament pendant 1 mois',
+    'Mettre en place un pilulier dès cette semaine',
+    'Programmer des rappels sur téléphone'
+  ],
+  'polymédication': [
+    'Bilan de médication en pharmacie dans les 15 jours',
+    'Revoir la liste des médicaments avec le médecin'
+  ],
+  'vaccination': [
+    'Réaliser les vaccins manquants dès aujourd\'hui',
+    'Carnet de vaccination à jour avant la fin du mois'
+  ],
+  'vaccin': [
+    'Réaliser les vaccins manquants en officine',
+    'Mettre le carnet de vaccination à jour'
+  ],
+  'prévention': [
+    'Réaliser tous les dépistages recommandés dans le trimestre',
+    'Bilan médical annuel dans le mois'
+  ]
+};
+
+function updatePabLabels() {
+  var p1 = document.getElementById('p1').value;
+  var p2 = document.getElementById('p2').value;
+  var l1 = document.getElementById('pab1-label');
+  var l2 = document.getElementById('pab2-label');
+  if (l1) l1.textContent = p1 || 'Priorité 1 — renseignez l\'étape 4';
+  if (l2) l2.textContent = p2 || 'Priorité 2 — facultatif';
+}
+
+function getObjectifs(text) {
+  var t = text.toLowerCase(); var found = [];
+  Object.keys(OBJECTIFS).forEach(function(key) {
+    if (t.indexOf(key) !== -1) {
+      OBJECTIFS[key].forEach(function(o) {
+        if (!found.includes(o)) found.push(o);
+      });
+    }
+  });
+  if (!found.length && text) found = ['Améliorer mon état de santé dans les 3 mois', 'Consulter mon médecin traitant dans le mois'];
+  return found.slice(0, 4);
+}
+
+function renderObjChips(containerId, targetInputId, objectifs, chipClass) {
+  var c = document.getElementById(containerId);
+  if (!c) return;
+  if (!objectifs.length) { c.innerHTML = ''; return; }
+  c.innerHTML = '';
+  objectifs.forEach(function(o) {
+    var chip = document.createElement('button');
+    chip.className = 'pab-chip ' + (chipClass || '');
+    chip.textContent = o;
+    chip.type = 'button';
+    chip.onclick = function() {
+      var el = document.getElementById(targetInputId);
+      if (el) { el.value = o; sync(); }
+      // Re-générer les actions selon l'objectif choisi
+      suggestActionsForObj(targetInputId === 'obj1' ? 1 : 2, o);
+      c.querySelectorAll('.pab-chip').forEach(function(ch){ ch.style.opacity='0.4'; ch.disabled=true; });
+      chip.style.opacity='1'; chip.disabled=false;
+    };
+    c.appendChild(chip);
+  });
+}
+
+function suggestActionsForObj(priority, objectifText) {
+  var p = priority === 1 ? document.getElementById('p1').value : document.getElementById('p2').value;
+  var combined = (p + ' ' + objectifText).toLowerCase();
+  var actions = []; var ressources = [];
+  Object.keys(SUGGESTIONS).forEach(function(key) {
+    if (combined.indexOf(key) !== -1) {
+      var s = SUGGESTIONS[key];
+      s.actions.forEach(function(a) { if (!actions.find(function(x){ return x[0]===a[0]; })) actions.push(a); });
+      s.ressources.forEach(function(r) { if (ressources.indexOf(r)===-1) ressources.push(r); });
+    }
+  });
+  if (!actions.length) actions = [['Consulter le médecin traitant', 'Court terme'], ['Maintenir une activité physique', 'Court terme']];
+
+  if (priority === 1) {
+    renderChipsWithActions('pab1-chips', actions, 'act1', 'del1', 'act2', 'del2', '');
+  } else {
+    renderChipsWithActions('pab2-chips', actions, 'act3', 'del3', 'act4', 'del4', 'teal');
+  }
+  ressources.forEach(function(r) {
+    document.querySelectorAll('input[data-ppp="ressources"]').forEach(function(cb) {
+      if (cb.dataset.val === r) cb.checked = true;
+    });
+  });
+  sync();
+}
+
+function renderChipsWithActions(containerId, actions, targetAct1, targetDel1, targetAct2, targetDel2, chipClass) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  actions.slice(0, 4).forEach(function(a) {
+    var chip = document.createElement('button');
+    chip.className = 'pab-chip ' + chipClass;
+    chip.textContent = '+ ' + a[0];
+    chip.title = a[1];
+    chip.type = 'button';
+    chip.onclick = function() {
+      var el1 = document.getElementById(targetAct1);
+      var el2 = document.getElementById(targetAct2);
+      var d1 = document.getElementById(targetDel1);
+      var d2 = document.getElementById(targetDel2);
+      if (el1 && !el1.value) { el1.value = a[0]; if(d1) setSelectValue(d1, a[1]); }
+      else if (el2 && !el2.value) { el2.value = a[0]; if(d2) setSelectValue(d2, a[1]); }
+      chip.style.opacity = '0.4'; chip.disabled = true;
+      sync();
+    };
+    container.appendChild(chip);
+  });
+}
 function suggestActions() {
   var p1 = document.getElementById('p1').value;
   var p2 = document.getElementById('p2').value;
@@ -1437,51 +1676,32 @@ function suggestActions() {
     return { actions: actions, ressources: ressources };
   }
 
-  function renderChips(containerId, labelId, priorityText, targetAct1, targetDel1, targetAct2, targetDel2, chipClass) {
-    var container = document.getElementById(containerId);
-    var label = document.getElementById(labelId);
-    if (!priorityText) {
-      container.innerHTML = '<span class="pab-empty">Aucune priorité renseignée</span>';
-      if(label) label.textContent = containerId === 'pab1-chips' ? 'Priorité 1 — renseignez l\'étape 4' : 'Priorité 2 — facultatif';
-      return;
-    }
-    if(label) label.textContent = priorityText;
-    var sugg = getSuggestions(priorityText);
-    container.innerHTML = '';
-    sugg.actions.slice(0, 4).forEach(function(a) {
-      var chip = document.createElement('button');
-      chip.className = 'pab-chip ' + (chipClass || '');
-      chip.textContent = '+ ' + a[0];
-      chip.title = a[1];
-      chip.type = 'button';
-      chip.onclick = function() {
-        var el1 = document.getElementById(targetAct1);
-        var el2 = document.getElementById(targetAct2);
-        var del1 = document.getElementById(targetDel1);
-        var del2 = document.getElementById(targetDel2);
-        if (el1 && !el1.value) {
-          el1.value = a[0];
-          if (del1) setSelectValue(del1, a[1]);
-        } else if (el2 && !el2.value) {
-          el2.value = a[0];
-          if (del2) setSelectValue(del2, a[1]);
-        }
-        chip.style.opacity = '0.4';
-        chip.disabled = true;
-        sync();
-      };
-      container.appendChild(chip);
-    });
-    // Cocher ressources
-    sugg.ressources.forEach(function(r) {
+  // P1 — objectifs + actions
+  if (p1) {
+    document.getElementById('pab1-label').textContent = p1;
+    renderObjChips('pab1-obj-chips', 'obj1', getObjectifs(p1), '');
+    var s1 = getSuggestions(p1);
+    renderChipsWithActions('pab1-chips', s1.actions, 'act1', 'del1', 'act2', 'del2', '');
+    s1.ressources.forEach(function(r) {
       document.querySelectorAll('input[data-ppp="ressources"]').forEach(function(cb) {
         if (cb.dataset.val === r) cb.checked = true;
       });
     });
   }
 
-  renderChips('pab1-chips', 'pab1-label', p1, 'act1', 'del1', 'act2', 'del2', '');
-  renderChips('pab2-chips', 'pab2-label', p2, 'act3', 'del3', 'act4', 'del4', 'teal');
+  // P2 — objectifs + actions
+  if (p2) {
+    document.getElementById('pab2-label').textContent = p2;
+    renderObjChips('pab2-obj-chips', 'obj2', getObjectifs(p2), 'teal');
+    var s2 = getSuggestions(p2);
+    renderChipsWithActions('pab2-chips', s2.actions, 'act3', 'del3', 'act4', 'del4', 'teal');
+    s2.ressources.forEach(function(r) {
+      document.querySelectorAll('input[data-ppp="ressources"]').forEach(function(cb) {
+        if (cb.dataset.val === r) cb.checked = true;
+      });
+    });
+  }
+
   sync();
 }
 
@@ -1497,8 +1717,9 @@ resetForm = function() {
   clearCanvas('canvas-patient', 'status-patient');
   clearCanvas('canvas-pharm', 'status-pharm');
   document.getElementById('consent').checked = false;
-  document.getElementById('pab1-chips').innerHTML = '';
-  document.getElementById('pab2-chips').innerHTML = '';
+  ['pab1-chips','pab2-chips','pab1-obj-chips','pab2-obj-chips'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.innerHTML = '';
+  });
   document.getElementById('pab1-label').textContent = 'Priorité 1 — renseignez l\'étape 4';
   document.getElementById('pab2-label').textContent = 'Priorité 2 — facultatif';
   syncSig();
