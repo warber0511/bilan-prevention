@@ -61,7 +61,7 @@
 <script>
 function checkPassword() {
   var pwd = document.getElementById('pwd-input').value;
-  if (pwd === 'warren') {
+  if (pwd === 'Kavel39!') {
     document.getElementById('login-screen').style.display = 'none';
     document.title = 'Bilan Prévention — Entretien guidé';
     sessionStorage.setItem('bp-auth', '1');
@@ -345,6 +345,128 @@ header {
 .dot-gray { background: var(--border2); }
 .empty-hint { font-style: italic; color: var(--text3); font-size: 12px; }
 
+.suggest-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius);
+  border: 1px solid var(--purple-border);
+  background: var(--purple-light); color: var(--purple);
+  font-size: 12px; font-weight: 500;
+  font-family: 'IBM Plex Sans', sans-serif;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 4px;
+}
+.suggest-btn:hover { background: var(--purple); color: white; }
+.ai-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 10px 16px; margin-top: 10px;
+  border-radius: var(--radius); border: 1px solid var(--purple);
+  cursor: pointer; background: var(--purple); color: white;
+  font-size: 13px; font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.15s; font-weight: 500;
+}
+.ai-btn:hover { background: #3C3789; }
+.ai-btn:disabled { background: #AFA9EC; border-color: #AFA9EC; cursor: not-allowed; }
+.ai-advice-item {
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+  font-size: 12px; color: var(--text); line-height: 1.5;
+  display: flex; gap: 6px; align-items: flex-start;
+}
+.ai-advice-item:last-child { border-bottom: none; }
+.ai-advice-item .ai-cat {
+  font-size: 10px; font-weight: 500; color: var(--purple);
+  text-transform: uppercase; letter-spacing: 0.04em;
+  font-family: 'IBM Plex Mono', monospace;
+  min-width: 60px; margin-top: 2px; flex-shrink: 0;
+}
+.ai-loading {
+  font-size: 12px; color: var(--purple); font-style: italic;
+  padding: 8px 0; display: flex; align-items: center; gap: 6px;
+}
+.ai-loading::before {
+  content: ''; width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--purple-border); border-top-color: var(--purple);
+  animation: spin 0.8s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.advice-print-card {
+  background: white; border: 1px solid #E0DDD5;
+  border-radius: 12px; padding: 24px; margin: 20px 0;
+}
+.advice-print-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 1px solid #E0DDD5;
+}
+.advice-print-logo {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: #4B45A1; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
+  flex-shrink: 0;
+}
+.advice-print-title { font-size: 15px; font-weight: 500; color: #1A1917; }
+.advice-print-sub { font-size: 12px; color: #9C9A93; margin-top: 2px; }
+.advice-print-footer {
+  font-size: 11px; color: #9C9A93; margin-top: 16px;
+  padding-top: 12px; border-top: 1px solid #E0DDD5;
+}
+.advice-block {
+  margin-bottom: 14px; padding: 12px 14px;
+  border-radius: 8px; border: 1px solid #E0DDD5;
+}
+.advice-block-cat {
+  font-size: 10px; font-weight: 500; color: #4B45A1;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 5px; font-family: 'IBM Plex Mono', monospace;
+}
+.advice-block-text { font-size: 13px; color: #1A1917; line-height: 1.6; }
+@media print {
+  body * { visibility: hidden !important; }
+  #print-zone, #print-zone * { visibility: visible !important; }
+  #print-zone {
+    display: block !important;
+    position: fixed; top: 0; left: 0;
+    width: 100%; padding: 20px;
+    background: white;
+  }
+}
+
+.priority-actions-block {
+  background: var(--surface2); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.pab-header { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+.pab-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #EEEDFE; color: #3C3489;
+  font-size: 10px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace; flex-shrink: 0;
+}
+.pab-label { font-size: 12px; font-weight: 500; color: var(--text); }
+.pab-chips { display: flex; flex-wrap: wrap; gap: 5px; min-height: 10px; }
+.pab-chip {
+  font-size: 11px; padding: 4px 10px; border-radius: 99px;
+  border: 1px solid var(--purple-border); background: var(--purple-light);
+  color: var(--purple); cursor: pointer; transition: all 0.15s;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.pab-chip:hover { background: var(--purple); color: white; border-color: var(--purple); }
+.pab-chip.teal { border-color: #5DCAA5; background: #E1F5EE; color: #0F6E56; }
+.pab-chip.teal:hover { background: #0F6E56; color: white; }
+.pab-empty { font-size: 12px; color: var(--text3); font-style: italic; }
+
+.suggest-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius);
+  border: 1px solid var(--purple-border);
+  background: var(--purple-light); color: var(--purple);
+  font-size: 12px; font-weight: 500;
+  font-family: 'IBM Plex Sans', sans-serif;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 4px;
+}
+.suggest-btn:hover { background: var(--purple); color: white; }
+
 .print-btn {
   display: flex; align-items: center; justify-content: center; gap: 6px;
   width: 100%; padding: 9px 16px; margin-top: 12px;
@@ -601,19 +723,44 @@ canvas.ppp-canvas { display: block; width: 100%; height: 50px; }
       <span class="step-title">Actions & ressources</span>
     </div>
     <div class="step-body">
-      <div>
-        <div class="grp-title">Actions concrètes planifiées</div>
+      <button class="suggest-btn" onclick="suggestActions()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Suggérer actions & ressources selon les priorités
+      </button>
+
+      <!-- PRIORITE 1 -->
+      <div class="priority-actions-block" id="pab1">
+        <div class="pab-header">
+          <div class="pab-num">P1</div>
+          <span class="pab-label" id="pab1-label">Priorité 1 — renseignez l'étape 4</span>
+        </div>
+        <div class="pab-chips" id="pab1-chips"></div>
+        <div class="grp-title" style="margin-top:8px;">Actions retenues</div>
         <div class="action-row">
-          <input type="text" id="act1" oninput="sync()" placeholder="Action 1">
+          <input type="text" id="act1" oninput="sync()" placeholder="Action 1 — priorité 1">
           <select id="del1" onchange="sync()"><option>Court terme</option><option>Moyen terme</option><option>Long terme</option></select>
         </div>
         <div class="action-row">
-          <input type="text" id="act2" oninput="sync()" placeholder="Action 2">
+          <input type="text" id="act2" oninput="sync()" placeholder="Action 2 — priorité 1">
           <select id="del2" onchange="sync()"><option>Court terme</option><option>Moyen terme</option><option>Long terme</option></select>
         </div>
+      </div>
+
+      <!-- PRIORITE 2 -->
+      <div class="priority-actions-block" id="pab2">
+        <div class="pab-header">
+          <div class="pab-num" style="background:#E1F5EE;color:#0F6E56;">P2</div>
+          <span class="pab-label" id="pab2-label">Priorité 2 — facultatif</span>
+        </div>
+        <div class="pab-chips" id="pab2-chips"></div>
+        <div class="grp-title" style="margin-top:8px;">Actions retenues</div>
         <div class="action-row">
-          <input type="text" id="act3" oninput="sync()" placeholder="Action 3 (facultatif)">
+          <input type="text" id="act3" oninput="sync()" placeholder="Action 1 — priorité 2">
           <select id="del3" onchange="sync()"><option>Court terme</option><option>Moyen terme</option><option>Long terme</option></select>
+        </div>
+        <div class="action-row">
+          <input type="text" id="act4" oninput="sync()" placeholder="Action 2 — priorité 2">
+          <select id="del4" onchange="sync()"><option>Court terme</option><option>Moyen terme</option><option>Long terme</option></select>
         </div>
       </div>
 
@@ -801,12 +948,15 @@ canvas.ppp-canvas { display: block; width: 100%; height: 50px; }
     </div>
   </div>
 
-  <button class="print-btn" onclick="window.print()">
+  <button class="print-btn" onclick="printPPP()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
     Imprimer le PPP
   </button>
   <button class="reset-btn" onclick="resetForm()">Nouveau patient</button>
 </div>
+
+<!-- ZONE D'IMPRESSION DÉDIÉE -->
+<div id="print-zone" style="display:none;"></div>
 
 </div>
 
@@ -918,6 +1068,8 @@ function sync() {
   if (act1) actions.push({ val: act1 + ' — ' + document.getElementById('del1').value, dot: 'dot-purple' });
   if (act2) actions.push({ val: act2 + ' — ' + document.getElementById('del2').value, dot: 'dot-purple' });
   if (act3) actions.push({ val: act3 + ' — ' + document.getElementById('del3').value, dot: 'dot-purple' });
+  var act4 = document.getElementById('act4') ? document.getElementById('act4').value : '';
+  if (act4) actions.push({ val: act4 + ' — ' + document.getElementById('del4').value, dot: 'dot-teal' });
   setList('ppp-actions', actions);
 
   setList('ppp-freins', getChecked('freins'));
@@ -1022,14 +1174,448 @@ function syncSig() {
 initCanvas('canvas-patient', 'status-patient', 'ppp-canvas-patient');
 initCanvas('canvas-pharm', 'status-pharm', 'ppp-canvas-pharm');
 
-var origReset = resetForm;
+// ---- SUGGESTIONS ACTIONS & RESSOURCES ----
+var SUGGESTIONS = {
+  // Mots-clés → { actions: [[texte, delai]], ressources: [val] }
+  'tabac': {
+    actions: [
+      ['Fixer une date d\'arrêt dans les 2 semaines', 'Court terme'],
+      ['Demander une prescription de substituts nicotiniques', 'Court terme'],
+      ['Consulter un tabacologue pour accompagnement', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Tabacologie', 'Application santé']
+  },
+  'alcool': {
+    actions: [
+      ['Tenir un journal de consommation pendant 1 semaine', 'Court terme'],
+      ['Définir des jours sans alcool dans la semaine', 'Court terme'],
+      ['Consulter le médecin traitant pour un accompagnement', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Psychologue', 'Associations locales']
+  },
+  'cannabis': {
+    actions: [
+      ['Consulter le médecin traitant pour évaluation', 'Court terme'],
+      ['Identifier les situations déclenchantes et alternatives', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Psychologue']
+  },
+  'sédentarité': {
+    actions: [
+      ['Marcher 30 minutes par jour minimum', 'Court terme'],
+      ['Prendre les escaliers plutôt que l\'ascenseur', 'Court terme'],
+      ['Rejoindre une activité sportive encadrée', 'Moyen terme']
+    ],
+    ressources: ['Kiné', 'Médecin traitant', 'Associations locales']
+  },
+  'activité physique': {
+    actions: [
+      ['Marcher 30 minutes 3 fois par semaine', 'Court terme'],
+      ['Planifier des créneaux fixes d\'activité dans l\'agenda', 'Court terme'],
+      ['Rejoindre un cours de gym douce ou yoga', 'Moyen terme']
+    ],
+    ressources: ['Kiné', 'Associations locales', 'Application santé']
+  },
+  'alimentation': {
+    actions: [
+      ['Manger 5 fruits et légumes par jour', 'Court terme'],
+      ['Réduire les aliments ultra-transformés', 'Court terme'],
+      ['Consulter un diététicien pour un bilan nutritionnel', 'Moyen terme']
+    ],
+    ressources: ['Diététicien', 'Médecin traitant']
+  },
+  'poids': {
+    actions: [
+      ['Consulter un diététicien pour un programme personnalisé', 'Court terme'],
+      ['Reprendre une activité physique régulière', 'Court terme'],
+      ['Faire un bilan métabolique chez le médecin', 'Moyen terme']
+    ],
+    ressources: ['Diététicien', 'Médecin traitant', 'Kiné']
+  },
+  'surpoids': {
+    actions: [
+      ['Consulter un diététicien pour un programme personnalisé', 'Court terme'],
+      ['Reprendre une activité physique régulière adaptée', 'Court terme'],
+      ['Faire un bilan lipidique et glycémique', 'Moyen terme']
+    ],
+    ressources: ['Diététicien', 'Médecin traitant', 'Kiné']
+  },
+  'sommeil': {
+    actions: [
+      ['Instaurer des horaires de coucher fixes', 'Court terme'],
+      ['Arrêter les écrans 1h avant de dormir', 'Court terme'],
+      ['Consulter le médecin si insomnies persistantes', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Psychologue']
+  },
+  'hta': {
+    actions: [
+      ['Prendre la tension 2 fois par jour pendant 1 semaine', 'Court terme'],
+      ['Réduire la consommation de sel', 'Court terme'],
+      ['Consulter le médecin traitant pour bilan tensionnel', 'Court terme']
+    ],
+    ressources: ['Médecin traitant', 'Cardiologue', 'Infirmier']
+  },
+  'tension': {
+    actions: [
+      ['Autocontrôle tensionnel matin et soir pendant 7 jours', 'Court terme'],
+      ['Réduire sel, alcool et stress', 'Court terme'],
+      ['Bilan cardiologique si tension non contrôlée', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Cardiologue']
+  },
+  'diabète': {
+    actions: [
+      ['Contrôler la glycémie à jeun', 'Court terme'],
+      ['Adapter l\'alimentation avec un diététicien', 'Court terme'],
+      ['Consultation diabétologique si glycémie élevée', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Diététicien', 'Infirmier']
+  },
+  'cholestérol': {
+    actions: [
+      ['Bilan lipidique sanguin à prescrire par le médecin', 'Court terme'],
+      ['Réduire les graisses saturées dans l\'alimentation', 'Court terme'],
+      ['Augmenter l\'activité physique quotidienne', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Diététicien', 'Cardiologue']
+  },
+  'cardiovasculaire': {
+    actions: [
+      ['Consulter le cardiologue pour bilan préventif', 'Court terme'],
+      ['Arrêt du tabac si fumeur', 'Court terme'],
+      ['Activité physique modérée 3x par semaine', 'Moyen terme']
+    ],
+    ressources: ['Cardiologue', 'Médecin traitant', 'Kiné']
+  },
+  'colorectal': {
+    actions: [
+      ['Réaliser le test de dépistage colorectal (kit remis)', 'Court terme'],
+      ['Envoyer le kit dans les 7 jours', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  },
+  'mammographie': {
+    actions: [
+      ['Prendre rendez-vous pour mammographie de dépistage', 'Court terme'],
+      ['Contacter le médecin traitant pour prescription', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  },
+  'frottis': {
+    actions: [
+      ['Prendre rendez-vous gynécologique pour frottis', 'Court terme'],
+      ['Contacter le médecin ou la sage-femme', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  },
+  'ist': {
+    actions: [
+      ['Consultation médecin pour dépistage IST', 'Court terme'],
+      ['Utiliser des préservatifs systématiquement', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  },
+  'anxiété': {
+    actions: [
+      ['Pratiquer 10 minutes de respiration profonde par jour', 'Court terme'],
+      ['Consulter un psychologue ou médecin', 'Court terme'],
+      ['Réduire les excitants (café, alcool, écrans)', 'Court terme']
+    ],
+    ressources: ['Psychologue', 'Médecin traitant', 'Application santé']
+  },
+  'dépression': {
+    actions: [
+      ['Consulter le médecin traitant en priorité', 'Court terme'],
+      ['Maintenir une activité physique légère quotidienne', 'Court terme'],
+      ['Préserver des liens sociaux réguliers', 'Court terme']
+    ],
+    ressources: ['Médecin traitant', 'Psychologue', 'Associations locales']
+  },
+  'isolement': {
+    actions: [
+      ['Rejoindre une association ou activité de groupe', 'Court terme'],
+      ['Planifier un contact social par semaine minimum', 'Court terme'],
+      ['Consulter le médecin pour évaluation du bien-être', 'Moyen terme']
+    ],
+    ressources: ['Associations locales', 'Médecin traitant', 'Psychologue']
+  },
+  'chute': {
+    actions: [
+      ['Évaluation de l\'équilibre par le kinésithérapeute', 'Court terme'],
+      ['Sécuriser le domicile (tapis, éclairage, barres)', 'Court terme'],
+      ['Programme de renforcement musculaire adapté', 'Moyen terme']
+    ],
+    ressources: ['Kiné', 'Médecin traitant', 'Infirmier']
+  },
+  'cognitif': {
+    actions: [
+      ['Consultation mémoire chez le médecin traitant', 'Court terme'],
+      ['Maintenir des activités cognitives quotidiennes', 'Court terme'],
+      ['Maintenir une activité physique régulière', 'Moyen terme']
+    ],
+    ressources: ['Médecin traitant', 'Associations locales']
+  },
+  'mémoire': {
+    actions: [
+      ['Consultation mémoire chez le médecin traitant', 'Court terme'],
+      ['Stimulation cognitive quotidienne', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  },
+  'observance': {
+    actions: [
+      ['Mettre en place un pilulier hebdomadaire', 'Court terme'],
+      ['Entretien pharmaceutique pour suivi du traitement', 'Court terme'],
+      ['Programmer des rappels sur téléphone pour les prises', 'Court terme']
+    ],
+    ressources: ['Médecin traitant', 'Infirmier', 'Application santé']
+  },
+  'polymédication': {
+    actions: [
+      ['Bilan de médication complet en pharmacie', 'Court terme'],
+      ['Revoir la liste des médicaments avec le médecin', 'Court terme'],
+      ['Signaler tout effet indésirable au pharmacien', 'Court terme']
+    ],
+    ressources: ['Médecin traitant', 'Infirmier']
+  },
+  'vaccination': {
+    actions: [
+      ['Réaliser les vaccins manquants en officine dès aujourd\'hui', 'Court terme'],
+      ['Mettre le carnet de vaccination à jour', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  },
+  'vaccin': {
+    actions: [
+      ['Réaliser les vaccins manquants en officine', 'Court terme'],
+      ['Mettre le carnet de vaccination à jour', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  },
+  'prévention': {
+    actions: [
+      ['Réaliser les dépistages recommandés pour l\'âge', 'Court terme'],
+      ['Consulter le médecin traitant pour bilan annuel', 'Court terme']
+    ],
+    ressources: ['Médecin traitant']
+  }
+};
+
+function suggestActions() {
+  var p1 = document.getElementById('p1').value;
+  var p2 = document.getElementById('p2').value;
+  var risques = getChecked('risques').map(function(r){ return r.val.toLowerCase(); });
+
+  if (!p1 && !p2 && !risques.length) {
+    alert('Veuillez d\'abord renseigner au moins une priorité à l\'étape 4.');
+    return;
+  }
+
+  function getSuggestions(text) {
+    var actions = []; var ressources = [];
+    var t = text.toLowerCase();
+    Object.keys(SUGGESTIONS).forEach(function(key) {
+      if (t.indexOf(key) !== -1) {
+        var s = SUGGESTIONS[key];
+        s.actions.forEach(function(a) {
+          if (!actions.find(function(x){ return x[0] === a[0]; })) actions.push(a);
+        });
+        s.ressources.forEach(function(r) {
+          if (ressources.indexOf(r) === -1) ressources.push(r);
+        });
+      }
+    });
+    if (!actions.length && text) {
+      actions = [
+        ['Consulter le médecin traitant pour bilan', 'Court terme'],
+        ['Maintenir une activité physique régulière', 'Court terme'],
+        ['Adopter une alimentation équilibrée', 'Moyen terme']
+      ];
+      ressources = ['Médecin traitant'];
+    }
+    return { actions: actions, ressources: ressources };
+  }
+
+  function renderChips(containerId, labelId, priorityText, targetAct1, targetDel1, targetAct2, targetDel2, chipClass) {
+    var container = document.getElementById(containerId);
+    var label = document.getElementById(labelId);
+    if (!priorityText) {
+      container.innerHTML = '<span class="pab-empty">Aucune priorité renseignée</span>';
+      if(label) label.textContent = containerId === 'pab1-chips' ? 'Priorité 1 — renseignez l\'étape 4' : 'Priorité 2 — facultatif';
+      return;
+    }
+    if(label) label.textContent = priorityText;
+    var sugg = getSuggestions(priorityText);
+    container.innerHTML = '';
+    sugg.actions.slice(0, 4).forEach(function(a) {
+      var chip = document.createElement('button');
+      chip.className = 'pab-chip ' + (chipClass || '');
+      chip.textContent = '+ ' + a[0];
+      chip.title = a[1];
+      chip.type = 'button';
+      chip.onclick = function() {
+        var el1 = document.getElementById(targetAct1);
+        var el2 = document.getElementById(targetAct2);
+        var del1 = document.getElementById(targetDel1);
+        var del2 = document.getElementById(targetDel2);
+        if (el1 && !el1.value) {
+          el1.value = a[0];
+          if (del1) setSelectValue(del1, a[1]);
+        } else if (el2 && !el2.value) {
+          el2.value = a[0];
+          if (del2) setSelectValue(del2, a[1]);
+        }
+        chip.style.opacity = '0.4';
+        chip.disabled = true;
+        sync();
+      };
+      container.appendChild(chip);
+    });
+    // Cocher ressources
+    sugg.ressources.forEach(function(r) {
+      document.querySelectorAll('input[data-ppp="ressources"]').forEach(function(cb) {
+        if (cb.dataset.val === r) cb.checked = true;
+      });
+    });
+  }
+
+  renderChips('pab1-chips', 'pab1-label', p1, 'act1', 'del1', 'act2', 'del2', '');
+  renderChips('pab2-chips', 'pab2-label', p2, 'act3', 'del3', 'act4', 'del4', 'teal');
+  sync();
+}
+
+function setSelectValue(sel, val) {
+  for (var i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].text === val || sel.options[i].value === val) {
+      sel.selectedIndex = i; return;
+    }
+  }
+}
 resetForm = function() {
   origReset();
   clearCanvas('canvas-patient', 'status-patient');
   clearCanvas('canvas-pharm', 'status-pharm');
   document.getElementById('consent').checked = false;
+  document.getElementById('pab1-chips').innerHTML = '';
+  document.getElementById('pab2-chips').innerHTML = '';
+  document.getElementById('pab1-label').textContent = 'Priorité 1 — renseignez l\'étape 4';
+  document.getElementById('pab2-label').textContent = 'Priorité 2 — facultatif';
   syncSig();
 };
+
+function printPPP() {
+  var nom = document.getElementById('nom').value || '—';
+  var ddn = document.getElementById('ddn').value || '—';
+  var pharm = document.getElementById('pharm').value || '—';
+  var datebilan = document.getElementById('datebilan').value || new Date().toLocaleDateString('fr-FR');
+  var tranche = document.querySelector('input[name=tranche]:checked');
+  var p1 = document.getElementById('p1').value || '—';
+  var obj1 = document.getElementById('obj1').value || '';
+  var p2 = document.getElementById('p2').value || '';
+  var obj2 = document.getElementById('obj2').value || '';
+  var act1 = document.getElementById('act1').value || '';
+  var act2 = document.getElementById('act2').value || '';
+  var act3 = document.getElementById('act3').value || '';
+  var act4 = document.getElementById('act4') ? document.getElementById('act4').value : '';
+  var del1 = document.getElementById('del1').value;
+  var del2 = document.getElementById('del2').value;
+  var del3 = document.getElementById('del3').value;
+  var del4 = document.getElementById('del4') ? document.getElementById('del4').value : '';
+  var commentaire = document.getElementById('commentaire').value || '';
+  var orient = document.querySelector('input[name=orient]:checked');
+  var vaccinprec = document.getElementById('vaccinprec').value || '';
+  var consent = document.getElementById('consent').checked;
+  var risques = getChecked('risques').map(function(r){ return r.val; });
+  var vaccins = getChecked('vaccins').map(function(v){ return v.val; });
+  var ressources = getChecked('ressources').map(function(r){ return r.val; });
+  var actes = getChecked('acte').map(function(a){ return a.val; });
+  var freins = getChecked('freins').map(function(f){ return f.val; });
+  var sigPatient = document.getElementById('canvas-patient').toDataURL();
+  var sigPharm = document.getElementById('canvas-pharm').toDataURL();
+
+  function listItems(arr, color) {
+    if (!arr.length) return '<li style="color:#9C9A93;font-style:italic;">Aucun</li>';
+    return arr.map(function(v){ return '<li style="color:' + color + ';margin-bottom:3px;">● ' + v + '</li>'; }).join('');
+  }
+  function actionLine(act, del) {
+    if (!act) return '';
+    return '<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #F0EEE8;font-size:12px;"><span>' + act + '</span><span style="color:#9C9A93;font-size:11px;white-space:nowrap;margin-left:10px;">' + del + '</span></div>';
+  }
+
+  var html = '<div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;color:#1A1917;">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #4B45A1;padding-bottom:12px;margin-bottom:16px;">';
+  html += '<div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:#4B45A1;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:bold;">BP</div>';
+  html += '<div><div style="font-size:16px;font-weight:bold;">Plan Personnalisé de Prévention</div><div style="font-size:11px;color:#9C9A93;">Mon Bilan Prévention — Code acte RDP — 30 €</div></div></div>';
+  html += '<div style="font-size:11px;color:#9C9A93;text-align:right;">Bilan du ' + datebilan + '<br>' + pharm + '</div></div>';
+
+  html += '<div style="background:#F7F6F2;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;gap:24px;">';
+  html += '<div><div style="font-size:10px;color:#9C9A93;text-transform:uppercase;">Patient</div><div style="font-size:14px;font-weight:bold;">' + nom + '</div></div>';
+  html += '<div><div style="font-size:10px;color:#9C9A93;text-transform:uppercase;">Date de naissance</div><div style="font-size:13px;">' + ddn + '</div></div>';
+  html += '<div><div style="font-size:10px;color:#9C9A93;text-transform:uppercase;">Tranche éligible</div><div style="font-size:13px;">' + (tranche ? tranche.value : '—') + '</div></div></div>';
+
+  html += '<div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Risques identifiés</div>';
+  html += '<ul style="list-style:none;padding:0;margin:0;columns:2;gap:10px;font-size:12px;">' + listItems(risques, '#A32D2D') + '</ul></div>';
+
+  if (vaccins.length) {
+    html += '<div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Vaccinations à mettre à jour</div>';
+    html += '<ul style="list-style:none;padding:0;margin:0;font-size:12px;">' + listItems(vaccins, '#0F6E56') + '</ul></div>';
+  }
+
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
+  html += '<div style="background:#EEEDFE;border-radius:8px;padding:10px;"><div style="font-size:10px;font-weight:bold;color:#4B45A1;text-transform:uppercase;margin-bottom:4px;">Priorité 1</div>';
+  html += '<div style="font-size:13px;font-weight:bold;">' + p1 + '</div>';
+  if (obj1) html += '<div style="font-size:11px;color:#534AB7;margin-top:3px;">Objectif : ' + obj1 + '</div>';
+  html += '</div>';
+  if (p2) {
+    html += '<div style="background:#E1F5EE;border-radius:8px;padding:10px;"><div style="font-size:10px;font-weight:bold;color:#0F6E56;text-transform:uppercase;margin-bottom:4px;">Priorité 2</div>';
+    html += '<div style="font-size:13px;font-weight:bold;">' + p2 + '</div>';
+    if (obj2) html += '<div style="font-size:11px;color:#0F6E56;margin-top:3px;">Objectif : ' + obj2 + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  html += '<div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Actions planifiées</div>';
+  html += actionLine(act1, del1) + actionLine(act2, del2) + actionLine(act3, del3) + actionLine(act4, del4);
+  html += '</div>';
+
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
+  html += '<div><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Freins identifiés</div>';
+  html += '<ul style="list-style:none;padding:0;margin:0;font-size:12px;">' + listItems(freins, '#854F0B') + '</ul></div>';
+  html += '<div><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Ressources & intervenants</div>';
+  html += '<ul style="list-style:none;padding:0;margin:0;font-size:12px;">' + listItems(ressources, '#0F6E56') + '</ul></div></div>';
+
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
+  html += '<div><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Acte complémentaire</div>';
+  html += '<ul style="list-style:none;padding:0;margin:0;font-size:12px;">' + listItems(actes, '#0F6E56') + '</ul>';
+  if (vaccinprec) html += '<div style="font-size:11px;color:#9C9A93;margin-top:4px;">' + vaccinprec + '</div>';
+  html += '</div>';
+  html += '<div><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Orientation médicale</div>';
+  html += '<div style="font-size:12px;">' + (orient ? orient.dataset.val : '—') + '</div></div></div>';
+
+  if (commentaire) {
+    html += '<div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid #E0DDD5;padding-bottom:4px;margin-bottom:6px;">Commentaires</div>';
+    html += '<div style="font-size:12px;">' + commentaire + '</div></div>';
+  }
+
+  html += '<div style="margin-top:16px;border-top:2px solid #E0DDD5;padding-top:12px;">';
+  html += '<div style="font-size:10px;font-weight:bold;color:#9C9A93;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Consentement & signatures</div>';
+  if (consent) html += '<div style="font-size:11px;color:#0F6E56;margin-bottom:10px;">✓ Consentement recueilli — patient informé et signataire</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">';
+  html += '<div><div style="font-size:10px;color:#9C9A93;margin-bottom:4px;">Signature du patient</div><img src="' + sigPatient + '" style="width:100%;height:60px;object-fit:contain;border:1px solid #E0DDD5;border-radius:4px;background:white;"></div>';
+  html += '<div><div style="font-size:10px;color:#9C9A93;margin-bottom:4px;">Signature du pharmacien</div><img src="' + sigPharm + '" style="width:100%;height:60px;object-fit:contain;border:1px solid #E0DDD5;border-radius:4px;background:white;"></div>';
+  html += '</div></div>';
+  html += '<div style="margin-top:14px;font-size:10px;color:#9C9A93;text-align:center;border-top:1px solid #E0DDD5;padding-top:8px;">Document à verser au DMP et transmis au médecin traitant — Code acte RDP — 30 € — Une seule fois par tranche d\'âge</div>';
+  html += '</div>';
+
+  var zone = document.getElementById('print-zone');
+  zone.innerHTML = html;
+  zone.style.display = 'block';
+  setTimeout(function() {
+    window.print();
+    zone.style.display = 'none';
+  }, 300);
+}
 </script>
 </body>
 </html>
